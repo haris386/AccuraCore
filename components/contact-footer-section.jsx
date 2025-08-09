@@ -1,9 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 
 export default function ContactFooterSection() {
+  const socialIcons = [
+    { src: "/Icons/Facebook.svg", alt: "Facebook" },
+    { src: "/Icons/Twitter.svg", alt: "Twitter" },
+    { src: "/Icons/Linkdin.svg", alt: "LinkedIn" },
+    { src: "/Icons/Instagram.svg", alt: "Instagram" },
+  ];
+
   return (
     <section className="relative bg-gradient-to-br from-orange-50 to-pink-50 ">
       <div
@@ -97,27 +103,27 @@ export default function ContactFooterSection() {
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </div>
-<div className="flex flex-col pt-2 space-y-2">
-  <label
-    htmlFor="hcaptcha"
-    className="text-sm font-medium text-gray-700"
-  >
-    hCaptcha
-  </label>
+              <div className="flex flex-col pt-2 space-y-2">
+                <label
+                  htmlFor="hcaptcha"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  hCaptcha
+                </label>
 
-  <div className="flex items-center space-x-2">
-    <input
-      type="checkbox"
-      id="hcaptcha"
-      name="hcaptcha"
-      className="h-4 w-4 text-orange-500 border-gray-300 rounded"
-    />
-    <span className="text-gray-700 text-sm">I Am Human</span>
-    <div className="w-16 h-6 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400 border border-gray-200">
-      hCaptcha
-    </div>
-  </div>
-</div>
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="hcaptcha"
+                    name="hcaptcha"
+                    className="h-4 w-4 text-orange-500 border-gray-300 rounded"
+                  />
+                  <span className="text-gray-700 text-sm">I Am Human</span>
+                  <div className="w-16 h-6 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400 border border-gray-200">
+                    hCaptcha
+                  </div>
+                </div>
+              </div>
               <button
                 type="submit"
                 className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-full transition-colors duration-300 shadow-md"
@@ -139,13 +145,18 @@ export default function ContactFooterSection() {
           <div className="flex flex-col items-center md:items-start">
             <h4 className="text-gray-200 font-semibold mb-2">Follow Us</h4>
             <div className="flex space-x-3">
-              {[Facebook, Twitter, Linkedin, Instagram].map((Icon, i) => (
+              {socialIcons.map((icon, i) => (
                 <Link
                   key={i}
                   href="#"
-                  className="w-8 h-8 rounded-full border border-white flex items-center justify-center hover:bg-white hover:text-black transition-colors"
+                  className="w-8 h-8 flex items-center justify-center border border-white transition-colors duration-300"
+                  style={{ borderRadius: "12px" }}
                 >
-                  <Icon size={16} />
+                  <img
+                    src={icon.src}
+                    alt={icon.alt}
+                    className="w-4 h-4 object-contain transition-all duration-300"
+                  />
                 </Link>
               ))}
             </div>
@@ -154,7 +165,7 @@ export default function ContactFooterSection() {
           {/* Row 2: Copyright + Disclaimer */}
           <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-300 gap-y-3 gap-x-6 pt-5">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-center md:text-left">
-              <span>© 2012 - 2016 Avada</span>
+              <span>Copyright 2012 - 2016 Avada</span>
               <span>|</span>
               <span>All Rights Reserved</span>
               <span>|</span>
@@ -173,6 +184,15 @@ export default function ContactFooterSection() {
           </div>
         </div>
       </footer>
+
+      <style jsx>{`
+        a:hover {
+          background-color: white;
+        }
+        a:hover img {
+          filter: brightness(0) saturate(100%);
+        }
+      `}</style>
     </section>
   );
 }

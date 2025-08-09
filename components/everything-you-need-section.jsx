@@ -1,64 +1,72 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 
+// Define all available images globally
+const allImages = [
+  {
+    id: "claim-location-mobile",
+    src: "/Images/Claim-Location.png",
+    alt: "Claim Location Mobile App",
+  },
+  {
+    id: "smart-dashboard",
+    src: "/Images/Smart-Dashboard.png",
+    alt: "Smart Dashboard",
+  },
+  {
+    id: "compile-report",
+    src: "/Images/Compile-Your-report.png",
+    alt: "Compile Your Report",
+  },
+  { id: "reports", src: "/Images/Reports.png", alt: "Reports Section" },
+  { id: "calendar", src: "/Images/Calendar.png", alt: "Calendar View" },
+];
+
+// Define tabs, linking to the central image ID
 const tabs = [
   {
     id: "claim-location",
     label: "Claim Location",
-    images: [
-      { src: "/claim-location.png", alt: "Claim Location Mobile App" },
-      { src: "/smart-dashboard.png", alt: "Smart Dashboard" },
-      { src: "/compile-your-report.png", alt: "Compile Your Report" },
-    ],
+    centralImageId: "claim-location-mobile",
   },
   {
     id: "smart-dashboard",
     label: "Smart Dashboard",
-    images: [
-      { src: "/claim-location.png", alt: "Claim Location Mobile App" },
-      { src: "/smart-dashboard.png", alt: "Smart Dashboard" },
-      { src: "/compile-your-report.png", alt: "Compile Your Report" },
-    ],
+    centralImageId: "smart-dashboard",
   },
   {
     id: "compile-report",
     label: "Compile Your Report",
-    images: [
-      { src: "/claim-location.png", alt: "Claim Location Mobile App" },
-      { src: "/smart-dashboard.png", alt: "Smart Dashboard" },
-      { src: "/compile-your-report.png", alt: "Compile Your Report" },
-    ],
+    centralImageId: "compile-report",
   },
-  {
-    id: "contact-profiles",
-    label: "Contact Profiles",
-    images: [
-      { src: "/claim-location.png", alt: "Claim Location Mobile App" },
-      { src: "/smart-dashboard.png", alt: "Smart Dashboard" },
-      { src: "/compile-your-report.png", alt: "Compile Your Report" },
-    ],
-  },
-  {
-    id: "calendar",
-    label: "Calendar",
-    images: [
-      { src: "/claim-location.png", alt: "Claim Location Mobile App" },
-      { src: "/smart-dashboard.png", alt: "Smart Dashboard" },
-      { src: "/compile-your-report.png", alt: "Compile Your Report" },
-    ],
-  },
+  { id: "reports", label: "Reports", centralImageId: "reports" },
+  { id: "calendar", label: "Calendar", centralImageId: "calendar" },
 ];
 
 export default function EverythingYouNeedSection() {
   const [activeTab, setActiveTab] = useState("smart-dashboard");
 
-  const currentTab = tabs.find((tab) => tab.id === activeTab) || tabs[1];
+  const currentTab = tabs.find((tab) => tab.id === activeTab) || tabs[1]; // Default to smart-dashboard
+
+  // Determine the central, left, and right images
+  const centralImageIndex = allImages.findIndex(
+    (img) => img.id === currentTab.centralImageId
+  );
+  const centralImage = allImages[centralImageIndex];
+
+  const leftImageIndex =
+    (centralImageIndex - 1 + allImages.length) % allImages.length;
+  const leftImage = allImages[leftImageIndex];
+
+  const rightImageIndex = (centralImageIndex + 1) % allImages.length;
+  const rightImage = allImages[rightImageIndex];
 
   return (
     <section className="py-16 lg:py-20 bg-gradient-to-br from-orange-50 to-pink-50">
-      <div className="w-[100%]">
+      <div className="w-full">
+        {" "}
+        {/* Added max-w-7xl and mx-auto for better centering */}
         <div
           className="p-8 lg:p-12"
           style={{
@@ -69,7 +77,9 @@ export default function EverythingYouNeedSection() {
           }}
         >
           {/* Heading */}
-          <div className="text-center mb-8 lg:mb-12">
+          <div className="text-center mb-8 lg:mb-12 px-4 lg:px-12">
+            {" "}
+            {/* Added horizontal padding */}
             <h2
               className="text-white font-bold leading-tight"
               style={{
@@ -84,7 +94,9 @@ export default function EverythingYouNeedSection() {
           </div>
 
           {/* Tab Buttons */}
-          <div className="flex flex-wrap justify-center gap-3 lg:gap-4 mb-8 lg:mb-12">
+          <div className="flex flex-wrap justify-center gap-3 lg:gap-4 mb-8 lg:mb-12 px-4 lg:px-12">
+            {" "}
+            {/* Added horizontal padding */}
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -104,43 +116,34 @@ export default function EverythingYouNeedSection() {
             ))}
           </div>
 
-          {/* Images */}
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-2 lg:gap-4">
-            {/* Left Image - Smaller */}
-            <div className="relative flex-shrink-0 order-1 lg:order-1">
-              <div className="rounded-2xl">
+          {/* Images Slider */}
+          <div className="relative w-full overflow-hidden rounded-2xl">
+            <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center justify-center h-[500px] relative gap-7">
+              {/* Left Image */}
+              <div className="relative flex justify-end overflow-hidden h-full rounded-xl">
                 <img
-                  src={currentTab.images[0]?.src || "/placeholder.svg"}
-                  alt={currentTab.images[0]?.alt || "Left Image"}
-                  width={200}
-                  height={300}
-                  className="w-full h-auto rounded-xl max-w-[200px]"
+                  src={leftImage.src || "/placeholder.svg"}
+                  alt={leftImage.alt}
+                  className="h-full max-w-none object-contain rounded-xl transition-all duration-500 ease-in-out transform scale-75 translate-x-1/2 opacity-50"
                 />
               </div>
-            </div>
 
-            {/* Center Image - Larger (800px) */}
-            <div className="relative flex-shrink-0 order-2 lg:order-2">
-              <div className="rounded-2xl">
+              {/* Center Image */}
+              <div className="relative flex justify-center h-full">
                 <img
-                  src={currentTab.images[1]?.src || "/placeholder.svg"}
-                  alt={currentTab.images[1]?.alt || "Center Image"}
-                  width={800}
-                  height={500}
-                  className="w-full h-auto rounded-xl max-w-[800px]"
+                  src={centralImage.src || "/placeholder.svg"}
+                  alt={centralImage.alt}
+                  className="h-full object-contain rounded-xl transition-all duration-500 ease-in-out"
+                  style={{ width: "800px" }}
                 />
               </div>
-            </div>
 
-            {/* Right Image - Smaller */}
-            <div className="relative flex-shrink-0 order-3 lg:order-3">
-              <div className="rounded-2xl">
+              {/* Right Image */}
+              <div className="relative flex justify-start overflow-hidden h-full">
                 <img
-                  src={currentTab.images[2]?.src || "/placeholder.svg"}
-                  alt={currentTab.images[2]?.alt || "Right Image"}
-                  width={200}
-                  height={300}
-                  className="w-full h-auto rounded-xl max-w-[200px]"
+                  src={rightImage.src || "/placeholder.svg"}
+                  alt={rightImage.alt}
+                  className="h-full max-w-none object-contain rounded-xl transition-all duration-500 ease-in-out transform scale-75 -translate-x-1/2 opacity-50"
                 />
               </div>
             </div>

@@ -11,9 +11,14 @@ export default function LandingPage() {
   return (
     <>
       {/* Hero Section */}
-      <div className="min-h-screen bg-black text-white relative overflow-hidden">
+      <div
+        className="min-h-screen bg-black text-white relative overflow-hidden bg-cover bg-center"
+        style={{
+          backgroundImage: `url('/Images/Hero-Image.png')`,
+        }}
+      >
         {/* Background texture/pattern */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/50 to-black/80" />
+        <div />
         <div
           className="absolute inset-0 opacity-20"
           style={{
@@ -27,7 +32,7 @@ export default function LandingPage() {
             {/* Logo */}
             <div className="flex items-center">
               <Image
-                src="/claimcore-logo.png"
+                src="/Logos/Claimcore/Mask-group.png"
                 alt="ClaimCore"
                 width={140}
                 height={40}
@@ -122,20 +127,6 @@ export default function LandingPage() {
                   <Button className="bg-white text-black hover:bg-gray-100 font-medium px-6 py-3 text-base rounded-md">
                     Explore More
                   </Button>
-                </div>
-              </div>
-
-              {/* Right Content */}
-              <div className="relative flex justify-center lg:justify-end">
-                <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
-                  <Image
-                    src="/right-img"
-                    alt="No assets provided for assessment"
-                    width={600}
-                    height={400}
-                    className="w-full h-auto"
-                    priority
-                  />
                 </div>
               </div>
             </div>

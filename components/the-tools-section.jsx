@@ -62,7 +62,7 @@ export default function TheToolsSection() {
           >
             <div className="relative w-full max-w-md">
               <img
-                src="/rt.png"
+                src="/Images/Report-Compile.png"
                 alt="Report Template Interface"
                 width={400}
                 height={500}
@@ -79,7 +79,7 @@ export default function TheToolsSection() {
           >
             <div className="relative w-full max-w-md">
               <img
-                src="/capture.png"
+                src="/Images/Claim-Images-&-Attachments.png"
                 alt="Mobile Capture Interface"
                 width={400}
                 height={500}
