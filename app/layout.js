@@ -1,17 +1,21 @@
-import { Inter } from 'next/font/google'
-import './globals.css'
+import { Sora, Outfit } from 'next/font/google';
+import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] })
+// Configure fonts
+const sora = Sora({ subsets: ['latin'], weight: ['400', '700'] });
+const outfit = Outfit({ subsets: ['latin'], weight: ['400', '700'] });
 
 export const metadata = {
-  title: 'ClaimCore - All-in-One Claims Solution',
-  description: 'Everything You Need For Claims In One Powerful App',
+  title: 'ClaimCore',
 }
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      {/* Apply Outfit globally to body */}
+      <body className={outfit.className}>
+        <div className={sora.className}>{children}</div>
+      </body>
     </html>
-  )
+  );
 }
