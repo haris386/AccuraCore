@@ -1,5 +1,6 @@
+"use client";
 import Image from "next/image";
-import Link from "next/link";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import WhatIsSection from "@/components/what-is-section";
 import EverythingYouNeedSection from "@/components/everything-you-need-section";
@@ -8,24 +9,23 @@ import PowerfulFeaturesSection from "@/components/powerful-features-section";
 import ContactFooterSection from "@/components/contact-footer-section";
 
 export default function LandingPage() {
+  const handleScroll = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <>
       {/* Hero Section */}
       <div
+        id="home"
         className="min-h-screen bg-black text-white relative overflow-hidden bg-cover bg-center"
         style={{
           backgroundImage: `url('/Images/Hero-Image.png')`,
         }}
       >
-        {/* Background texture/pattern */}
-        <div />
-        <div
-          className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        />
-
         {/* Navigation Header */}
         <header className="relative z-10 px-4 sm:px-6 lg:px-8 py-6">
           <nav className="flex items-center justify-between max-w-[100%] bg-[#333534] backdrop-blur-sm rounded-2xl px-6 py-4">
@@ -40,26 +40,29 @@ export default function LandingPage() {
               />
             </div>
 
-            {/* Navigation Links - Hidden on mobile */}
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <Link
-                href="#"
-                className="text-white hover:text-orange-400 transition-colors font-medium"
+              <span
+                onClick={() => handleScroll("home")}
+                className="text-white hover:text-orange-400 transition-colors cursor-pointer"
+                style={{ fontSize: "14px" }}
               >
                 Home
-              </Link>
-              <Link
-                href="#"
-                className="text-white hover:text-orange-400 transition-colors font-medium"
+              </span>
+              <span
+                onClick={() => handleScroll("explore")}
+                className="text-white hover:text-orange-400 transition-colors cursor-pointer"
+                style={{ fontSize: "14px" }}
               >
                 Explore
-              </Link>
-              <Link
-                href="#"
-                className="text-white hover:text-orange-400 transition-colors font-medium"
+              </span>
+              <span
+                onClick={() => handleScroll("contact")}
+                className="text-white hover:text-orange-400 transition-colors cursor-pointer"
+                style={{ fontSize: "14px" }}
               >
                 Contact
-              </Link>
+              </span>
             </div>
 
             {/* Book A Chat Button */}
@@ -124,7 +127,10 @@ export default function LandingPage() {
 
                 {/* CTA Button */}
                 <div className="pt-4">
-                  <Button className="bg-white text-black hover:bg-gray-100 font-medium px-6 py-3 text-base rounded-md">
+                  <Button
+                    onClick={() => handleScroll("explore")}
+                    className="bg-white text-black hover:bg-gray-100 font-medium px-6 py-3 text-base rounded-md"
+                  >
                     Explore More
                   </Button>
                 </div>
@@ -133,45 +139,50 @@ export default function LandingPage() {
           </div>
         </main>
 
-        {/* Mobile Navigation Menu */}
+        {/* Mobile Navigation */}
         <div className="md:hidden fixed bottom-4 left-4 right-4 z-20">
           <div className="bg-gray-900/90 backdrop-blur-sm rounded-lg p-4 flex justify-around">
-            <Link
-              href="#"
-              className="text-white hover:text-orange-400 transition-colors text-sm font-medium"
+            <span
+              onClick={() => handleScroll("home")}
+              className="text-white hover:text-orange-400 transition-colors text-sm font-medium cursor-pointer"
             >
               Home
-            </Link>
-            <Link
-              href="#"
-              className="text-white hover:text-orange-400 transition-colors text-sm font-medium"
+            </span>
+            <span
+              onClick={() => handleScroll("explore")}
+              className="text-white hover:text-orange-400 transition-colors text-sm font-medium cursor-pointer"
             >
               Explore
-            </Link>
-            <Link
-              href="#"
-              className="text-white hover:text-orange-400 transition-colors text-sm font-medium"
+            </span>
+            <span
+              onClick={() => handleScroll("contact")}
+              className="text-white hover:text-orange-400 transition-colors text-sm font-medium cursor-pointer"
             >
               Contact
-            </Link>
+            </span>
           </div>
         </div>
       </div>
 
       {/* What Is Section */}
+
       <WhatIsSection />
 
       {/* Everything You Need Section */}
       <EverythingYouNeedSection />
 
       {/* The Tools Section */}
-      <TheToolsSection />
+      <div id="explore">
+        <TheToolsSection />
+      </div>
 
       {/* Powerful Features Section */}
       <PowerfulFeaturesSection />
 
-      {/* Contact Us and Footer Section */}
-      <ContactFooterSection />
+      {/* Contact Section */}
+      <div id="contact">
+        <ContactFooterSection />
+      </div>
     </>
   );
 }
