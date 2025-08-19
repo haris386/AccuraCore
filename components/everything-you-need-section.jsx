@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import React, { useEffect, useRef, useCallback, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
 
-// Define all available images globally
 const allImages = [
   {
     id: "claim-location-mobile",
@@ -23,7 +23,6 @@ const allImages = [
   { id: "calendar", src: "/Images/Calendar.png", alt: "Calendar View" },
 ];
 
-// Define tabs, linking to the central image ID
 const tabs = [
   {
     id: "claim-location",
@@ -44,109 +43,152 @@ const tabs = [
   { id: "calendar", label: "Calendar", centralImageId: "calendar" },
 ];
 
+const TWEEN_FACTOR_BASE = 0.52;
+
+const numberWithinRange = (number, min, max) =>
+  Math.min(Math.max(number, min), max);
+
 export default function EverythingYouNeedSection() {
-  const [activeTab, setActiveTab] = useState("smart-dashboard");
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    align: "center",
+    containScroll: "trimSnaps",
+  });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const tweenFactor = useRef(0);
+  const tweenNodes = useRef([]);
 
-  const currentTab = tabs.find((tab) => tab.id === activeTab) || tabs[1]; // Default to smart-dashboard
+  // Scaling effect logic
+  const setTweenNodes = useCallback((emblaApi) => {
+    tweenNodes.current = emblaApi
+      .slideNodes()
+      .map((slideNode) => slideNode.querySelector("img"));
+  }, []);
 
-  // Determine the central, left, and right images
-  const centralImageIndex = allImages.findIndex(
-    (img) => img.id === currentTab.centralImageId
-  );
-  const centralImage = allImages[centralImageIndex];
+  const setTweenFactor = useCallback((emblaApi) => {
+    tweenFactor.current = TWEEN_FACTOR_BASE * emblaApi.scrollSnapList().length;
+  }, []);
 
-  const leftImageIndex =
-    (centralImageIndex - 1 + allImages.length) % allImages.length;
-  const leftImage = allImages[leftImageIndex];
+  const tweenScale = useCallback((emblaApi, eventName) => {
+    const engine = emblaApi.internalEngine();
+    const scrollProgress = emblaApi.scrollProgress();
+    const slidesInView = emblaApi.slidesInView();
+    const isScrollEvent = eventName === "scroll";
 
-  const rightImageIndex = (centralImageIndex + 1) % allImages.length;
-  const rightImage = allImages[rightImageIndex];
+    emblaApi.scrollSnapList().forEach((scrollSnap, snapIndex) => {
+      let diffToTarget = scrollSnap - scrollProgress;
+      const slidesInSnap = engine.slideRegistry[snapIndex];
+
+      slidesInSnap.forEach((slideIndex) => {
+        if (isScrollEvent && !slidesInView.includes(slideIndex)) return;
+
+        if (engine.options.loop) {
+          engine.slideLooper.loopPoints.forEach((loopItem) => {
+            const target = loopItem.target();
+            if (slideIndex === loopItem.index && target !== 0) {
+              const sign = Math.sign(target);
+              if (sign === -1) diffToTarget = scrollSnap - (1 + scrollProgress);
+              if (sign === 1) diffToTarget = scrollSnap + (1 - scrollProgress);
+            }
+          });
+        }
+
+        const tweenValue = 1 - Math.abs(diffToTarget * tweenFactor.current);
+        const scale = numberWithinRange(tweenValue, 0.7, 1).toString(); // central = 1, side = smaller
+        const tweenNode = tweenNodes.current[slideIndex];
+        tweenNode.style.transform = `scale(${scale})`;
+        tweenNode.style.transition = "transform 0.3s ease"; // smooth
+      });
+    });
+  }, []);
+
+  // Keep track of current index
+  const onSelect = useCallback((emblaApi) => {
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, []);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    setTweenNodes(emblaApi);
+    setTweenFactor(emblaApi);
+    tweenScale(emblaApi);
+
+    emblaApi
+      .on("reInit", setTweenNodes)
+      .on("reInit", setTweenFactor)
+      .on("reInit", tweenScale)
+      .on("scroll", tweenScale)
+      .on("slideFocus", tweenScale)
+      .on("select", onSelect);
+
+    onSelect(emblaApi);
+  }, [emblaApi, tweenScale, setTweenNodes, setTweenFactor, onSelect]);
+
+  // Handle Tab Click (jump to slide)
+  const handleTabClick = (tabId) => {
+    const index = allImages.findIndex((img) => img.id === tabId);
+    if (emblaApi && index !== -1) {
+      emblaApi.scrollTo(index);
+    }
+  };
 
   return (
     <section className="py-16 lg:py-20 bg-gradient-to-br from-orange-50 to-pink-50">
-      <div className="w-full">
-        {" "}
-        {/* Added max-w-7xl and mx-auto for better centering */}
-        <div
-          className="p-8 lg:p-12"
-          style={{
-            backgroundColor: "#1f0800",
-            borderRadius: "65px",
-            paddingLeft: 0,
-            paddingRight: 0,
-          }}
-        >
-          {/* Heading */}
-          <div className="text-center mb-8 lg:mb-12 px-4 lg:px-12">
-            {" "}
-            {/* Added horizontal padding */}
-            <h2
-              className="text-white font-bold leading-tight"
+      <div
+        className="p-8 lg:p-12"
+        style={{
+          backgroundColor: "#1f0800",
+          borderRadius: "65px",
+          paddingLeft: 0,
+          paddingRight: 0,
+        }}
+      >
+        {/* Heading */}
+        <div className="text-center mb-8 lg:mb-12">
+          <h2 className="text-white font-bold leading-tight text-xl lg:text-2xl">
+            Everything You Need To <br /> Run And Grow Your Business
+          </h2>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex flex-wrap justify-center gap-3 lg:gap-4 mb-8 lg:mb-12">
+          {tabs.map((tab, index) => (
+            <button
+              key={tab.id}
+              onClick={() => handleTabClick(tab.centralImageId)}
+              className={`px-4 lg:px-6 py-2 lg:py-3 rounded-full text-sm lg:text-base font-medium transition-all duration-300 whitespace-nowrap ${
+                allImages[selectedIndex].id === tab.centralImageId
+                  ? "bg-orange-500 text-white shadow-lg"
+                  : "text-white hover:bg-orange-500/20"
+              }`}
               style={{
-                fontSize: "1.5rem",
-                lineHeight: "1.75rem",
+                backgroundColor:
+                  allImages[selectedIndex].id === tab.centralImageId
+                    ? "#f97316"
+                    : "#4d3b37",
+                border: "1px solid gray",
               }}
             >
-              Everything You Need To
-              <br />
-              Run And Grow Your Business
-            </h2>
-          </div>
+              {tab.label}
+            </button>
+          ))}
+        </div>
 
-          {/* Tab Buttons */}
-          <div className="flex flex-wrap justify-center gap-3 lg:gap-4 mb-8 lg:mb-12 px-4 lg:px-12">
-            {" "}
-            {/* Added horizontal padding */}
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`px-4 lg:px-6 py-2 lg:py-3 rounded-full text-sm lg:text-base font-medium transition-all duration-300 whitespace-nowrap ${
-                  activeTab === tab.id
-                    ? "bg-orange-500 text-white shadow-lg"
-                    : "text-white hover:bg-orange-500/20"
-                }`}
-                style={{
-                  backgroundColor: activeTab === tab.id ? "#f97316" : "#4d3b37",
-                  border: "1px solid gray",
-                }}
+        {/* Embla Carousel */}
+        <div className="embla overflow-hidden" ref={emblaRef}>
+          <div className="embla__container flex">
+            {allImages.map((img) => (
+              <div
+                className="embla__slide flex-[0_0_55%] flex justify-center items-center px-2"
+                key={img.id}
               >
-                {tab.label}
-              </button>
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  className="h-[500px] object-contain rounded-xl"
+                />
+              </div>
             ))}
-          </div>
-
-          {/* Images Slider */}
-          <div className="relative w-full overflow-hidden rounded-2xl">
-            <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center justify-center h-[500px] relative gap-7">
-              {/* Left Image */}
-              <div className="relative flex justify-end overflow-hidden h-full rounded-xl">
-                <img
-                  src={leftImage.src || "/placeholder.svg"}
-                  alt={leftImage.alt}
-                  className="h-full max-w-none object-contain rounded-xl transition-all duration-500 ease-in-out transform scale-75 translate-x-1/2 opacity-50"
-                />
-              </div>
-
-              {/* Center Image */}
-              <div className="relative flex justify-center h-full">
-                <img
-                  src={centralImage.src || "/placeholder.svg"}
-                  alt={centralImage.alt}
-                  className="h-full object-contain rounded-xl transition-all duration-500 ease-in-out"
-                  style={{ width: "800px" }}
-                />
-              </div>
-
-              {/* Right Image */}
-              <div className="relative flex justify-start overflow-hidden h-full">
-                <img
-                  src={rightImage.src || "/placeholder.svg"}
-                  alt={rightImage.alt}
-                  className="h-full max-w-none object-contain rounded-xl transition-all duration-500 ease-in-out transform scale-75 -translate-x-1/2 opacity-50"
-                />
-              </div>
-            </div>
           </div>
         </div>
       </div>
