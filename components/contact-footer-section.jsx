@@ -60,7 +60,12 @@ export default function ContactFooterSection() {
             <p className="text-gray-500 text-sm mb-6 text-center">
               Please fill out this form with the required information
             </p>
-            <form className="space-y-5">
+            <form
+              action="https://formspree.io/f/mnnbqejn" 
+              method="POST"
+              className="space-y-5"
+            >
+              {/* Name */}
               <div>
                 <label
                   htmlFor="name"
@@ -72,9 +77,12 @@ export default function ContactFooterSection() {
                   id="name"
                   name="name"
                   type="text"
+                  required
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </div>
+
+              {/* Email */}
               <div>
                 <label
                   htmlFor="email"
@@ -86,9 +94,12 @@ export default function ContactFooterSection() {
                   id="email"
                   name="email"
                   type="email"
+                  required
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </div>
+
+              {/* Phone */}
               <div>
                 <label
                   htmlFor="phone"
@@ -103,27 +114,60 @@ export default function ContactFooterSection() {
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </div>
-              <div className="flex flex-col pt-2 space-y-2">
-                <label
-                  htmlFor="hcaptcha"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  hCaptcha
-                </label>
 
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id="hcaptcha"
-                    name="hcaptcha"
-                    className="h-4 w-4 text-orange-500 border-gray-300 rounded"
-                  />
-                  <span className="text-gray-700 text-sm">I Am Human</span>
-                  <div className="w-16 h-6 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400 border border-gray-200">
-                    hCaptcha
-                  </div>
+              {/* Company */}
+              <div>
+                <label
+                  htmlFor="company"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Company
+                </label>
+                <input
+                  id="company"
+                  name="company"
+                  type="text"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                />
+              </div>
+
+              {/* Software of Interest */}
+              <div>
+                <p className="text-sm font-medium text-gray-700 mb-2">
+                  Software of Interest
+                </p>
+                <div className="space-y-2">
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      name="software"
+                      value="AccuraCore"
+                      className="h-4 w-4 text-orange-500 border-gray-300 rounded"
+                    />
+                    <span className="ml-2 text-gray-700">AccuraCore</span>
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      name="software"
+                      value="ClaimCore"
+                      className="h-4 w-4 text-orange-500 border-gray-300 rounded"
+                    />
+                    <span className="ml-2 text-gray-700">ClaimCore</span>
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      name="software"
+                      value="AccuraCam"
+                      className="h-4 w-4 text-orange-500 border-gray-300 rounded"
+                    />
+                    <span className="ml-2 text-gray-700">AccuraCam</span>
+                  </label>
                 </div>
               </div>
+
+              {/* Submit Button */}
               <button
                 type="submit"
                 className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-full transition-colors duration-300 shadow-md"
