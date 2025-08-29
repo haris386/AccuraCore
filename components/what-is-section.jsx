@@ -152,7 +152,7 @@ export default function WhatIsSection() {
                 </span>
               </h4>
               <p className="text-sm text-gray-800 leading-relaxed mb-2">
-                Take it a step with simple UI tools, and team deeper access down
+                Take it up a step with simple UI tools, and team deeper access down
                 to inspector or team leader.
               </p>
               <p className="text-sm text-gray-800 leading-relaxed mb-2">
