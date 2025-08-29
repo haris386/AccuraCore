@@ -16,7 +16,7 @@ export default function ContactFooterSection() {
         className="w-[80%] mx-auto sm:px-6 lg:px-8 relative z-10"
         style={{ top: "100px" }}
       >
-        {/* Contact Section Content */}
+        {/* === Contact Section Content (KEEPING AS IS) === */}
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 p-0">
           {/* Left Column */}
           <div className="space-y-6 lg:space-y-8">
@@ -61,7 +61,7 @@ export default function ContactFooterSection() {
               Please fill out this form with the required information
             </p>
             <form
-              action="https://formspree.io/f/mnnbqejn" 
+              action="https://formspree.io/f/mnnbqejn"
               method="POST"
               className="space-y-5"
             >
@@ -179,35 +179,78 @@ export default function ContactFooterSection() {
         </div>
       </div>
 
-      {/* Footer Section */}
+      {/* === Footer Section === */}
       <footer
-        className="relative z-0 py-8 lg:py-8 text-white"
+        className="relative z-0 py-12 lg:py-14 text-white"
         style={{ background: "linear-gradient(to right, black, #963c00)" }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-          {/* Row 1: Follow Us & Icons */}
-          <div className="flex flex-col items-center md:items-start">
-            <h4 className="text-gray-200 font-semibold mb-2">Follow Us</h4>
-            <div className="flex space-x-3">
-              {socialIcons.map((icon, i) => (
-                <Link
-                  key={i}
-                  href="#"
-                  className="w-8 h-8 flex items-center justify-center border border-white transition-colors duration-300"
-                  style={{ borderRadius: "12px" }}
-                >
-                  <img
-                    src={icon.src}
-                    alt={icon.alt}
-                    className="w-4 h-4 object-contain transition-all duration-300"
-                  />
-                </Link>
-              ))}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* 3 Column Layout */}
+          <div
+            className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10 text-center md:text-left"
+            style={{ width: "50%" }}
+          >
+            {/* Follow Us */}
+            <div>
+              <h4 className="text-gray-200 font-semibold mb-4 uppercase tracking-wide">
+                Follow Us
+              </h4>
+              <div className="flex justify-center md:justify-start space-x-3">
+                {socialIcons.map((icon, i) => (
+                  <Link
+                    key={i}
+                    href="#"
+                    className="w-8 h-8 flex items-center justify-center border border-white transition-colors duration-300"
+                    style={{ borderRadius: "12px" }}
+                  >
+                    <img
+                      src={icon.src}
+                      alt={icon.alt}
+                      className="w-4 h-4 object-contain transition-all duration-300"
+                    />
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h4 className="text-gray-200 font-semibold mb-4 uppercase tracking-wide">
+                Contact
+              </h4>
+              <div className="space-y-2">
+                <p className="text-gray-300 text-sm">
+                  <span className="font-medium">(877) 887-7279</span>
+                </p>
+                <p className="text-gray-300 text-sm">
+                  <a
+                    href="mailto:admin@claimcore.com"
+                    className="hover:text-white underline"
+                  >
+                    admin@claimcore.com
+                  </a>
+                </p>
+              </div>
+            </div>
+
+            {/* Parent Company */}
+            <div>
+              <h4 className="text-gray-200 font-semibold mb-4 uppercase tracking-wide">
+                Parent Company
+              </h4>
+              <a
+                href="https://www.sparxtech.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 text-sm hover:text-white underline"
+              >
+                sparxtech.com
+              </a>
             </div>
           </div>
 
-          {/* Row 2: Copyright + Disclaimer */}
-          <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-300 gap-y-3 gap-x-6 pt-5">
+          {/* Bottom Row */}
+          <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-300 gap-y-3 gap-x-6 border-t border-gray-600 pt-6">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-center md:text-left">
               <span>Copyright 2012 - 2016 Avada</span>
               <span>|</span>
@@ -228,15 +271,6 @@ export default function ContactFooterSection() {
           </div>
         </div>
       </footer>
-
-      <style jsx>{`
-        a:hover {
-          background-color: white;
-        }
-        a:hover img {
-          filter: brightness(0) saturate(100%);
-        }
-      `}</style>
     </section>
   );
 }
