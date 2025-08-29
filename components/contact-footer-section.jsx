@@ -192,9 +192,7 @@ export default function ContactFooterSection() {
           >
             {/* Follow Us */}
             <div>
-              <h4 className="text-gray-200 font-semibold mb-4 uppercase tracking-wide">
-                Follow Us
-              </h4>
+              <h4 className="text-gray-200 font-semibold mb-2">Follow Us</h4>
               <div className="flex justify-center md:justify-start space-x-3">
                 {socialIcons.map((icon, i) => (
                   <Link
@@ -215,9 +213,7 @@ export default function ContactFooterSection() {
 
             {/* Contact */}
             <div>
-              <h4 className="text-gray-200 font-semibold mb-4 uppercase tracking-wide">
-                Contact
-              </h4>
+              <h4 className="text-gray-200 font-semibold mb-2">Contact</h4>
               <div className="space-y-2">
                 <p className="text-gray-300 text-sm">
                   <span className="font-medium">(877) 887-7279</span>
@@ -235,7 +231,7 @@ export default function ContactFooterSection() {
 
             {/* Parent Company */}
             <div>
-              <h4 className="text-gray-200 font-semibold mb-4 uppercase tracking-wide">
+              <h4 className="text-gray-200 font-semibold mb-2">
                 Parent Company
               </h4>
               <a
